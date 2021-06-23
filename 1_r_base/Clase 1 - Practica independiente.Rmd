@@ -1,0 +1,90 @@
+---
+title: "Introducción al lenguaje R"
+subtitle: "Practica independiente"
+output:
+  html_notebook:
+    toc: yes
+    toc_float: yes
+  html_document:
+    toc: yes
+---
+
+
+# Ejercicios de práctica
+
+<br> 
+
+a. Crear un OBJETO llamado `COSA` definido como el resultado de la multiplicación: 5*6
+```{r}
+
+```
+
+<br> 
+
+b. Crear un __vector__ llamado `ingreso` que contenga los números 1005, 20023, 15800 y 56000.
+```{r}
+
+```
+
+<br> 
+
+c. Modificar el segundo elemento del __vector__ `ingreso` y asignarle el valor *40000*
+```{r}
+
+```
+
+<br> 
+
+d. Crear 2 __vectores__ con la misma cantidad de valores que `ingreso`, pero de tipo texto (*character*) .
+```{r}
+
+```
+
+<br> 
+
+e. Crear y nombrar un objeto de tipo *dataframe* que sea la combinación de todos los __vectores__ creados previamente
+```{r}
+
+```
+
+<br> 
+
+f. Crear un objeto llamado *OTRA_COSA* que guarde el valor contenido en la segunda fila y tercera columna del __dataframe__ creado anteriormente
+```{r}
+
+```
+
+<br> 
+
+g. Crear un vector con el siguiente contenido:
+```r
+c("1", "dos", 3, "CUATRO", 5, NA)
+```
+
+<br>
+
+h_1. Calcular la media del `ingreso` para el __dataframe__ creado
+```{r}
+
+```
+
+<br>
+
+h_2. Verificar de qué tipo es el vector recientemente creado
+```{r}
+
+```
+
+<br>
+
+i. Sobre el __dataframe__ creado, ejecutar las siguientes funciones y describir brevemente qué hace cada una:
+
+- `dim(aca_va_la_base_de_datos)`
+
+- `names(aca_va_la_base_de_datos)`
+
+- `summary(aca_va_la_base_de_datos)`
+
+- `length(aca_va_la_base_de_datos)`
+
+- `str(aca_va_la_base_de_datos)`

@@ -1,0 +1,53 @@
+---
+title: "Análisis de casos COVID"
+author: "Pablo Tiscornia"
+date: "17/6/2021"
+output: 
+  html_document:
+toc: true
+toc_float: true
+---
+
+# Título nivel I
+
+## Nivel II
+
+### Nivel III
+
+#### Nivel IV
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message=FALSE, 
+                      warning=FALSE)
+```
+
+<br>
+
+### CASO: Quiero conocer la distribución por edad de la población COVID.
+
+```{r}
+library(tidyverse)
+library(data.table)
+
+base_covid <- fread("../entradas/base_covid_muestra.txt")
+```
+
+Acá la *distribución* por **sexo**:
+
+```{r}
+table(base_covid$sexo)
+```
+
+**Acá** la distribución por edad
+
+```{r}
+base_covid %>% 
+  ggplot(aes(x = edad))+
+  geom_histogram()
+```
+
+
+
+**table**(base_covid$sexo)
