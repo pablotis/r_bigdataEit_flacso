@@ -27,27 +27,31 @@ Ir a <https://cloud.r-project.org/> y hacer clic en _Download R for Windows_.
 
 ![](img/02.png)
 
+<br>
 
 Se abrirá la siguiente página. Hacer clic en _install R for the first time_.
 
 ![](img/03.png)
 
+<br>
 
 Se abrirá la siguiente página. Hacer clic en _Download R-4.2.0 for Windows_.
 
 ![](img/04.png)
 
+<br>
 
 Se abrirá el siguiente cuadro de diálogo. Hacer clic en la ventana para habilitar el botón _Guardar archivo_.
 
 ![](img/05.png)
 
+<br>
 
 Ejecutar el archivo de instalación eligiendo las opciones por defecto.
 
 ![](img/06.png)
 
-
+<br>
 
 ### Instalación de Rtools
 
@@ -63,6 +67,7 @@ Este programa es seguro y no instalará otra cosa que no sea RTools.
 
 ![](img/08.png)
 
+<br>
 
 ## Para los usuarios de Mac
 
@@ -72,6 +77,7 @@ Se abrirá la siguiente página. Hacer clic en el link que indica la flecha roja
 
 ![](img/09.png)
 
+<br>
 
 Para instalar R-Commander ([https://socialsciences.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html)](https://socialsciences.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html)) es necesario disponer de las librerías gráficas **X11**. Como a partir de **OS X Lion** ya no están instaladas por defecto en el sistema, es necesario instalar las librerías **Open Source XQuartz** desde <https://www.xquartz.org.>
 
@@ -81,6 +87,7 @@ Finalmente, abrir R. Una vez abierto, ejecutar en la consola de R para instalar 
 install.packages("Rcmdr", dependencies = TRUE)
 ```
 
+<br>
 
 # Paso 2: Instalación de R Studio
 
@@ -90,6 +97,7 @@ Seleccionar del menú _Products Rstudio (the premier IDE form R)_, luego elegir 
 
 ![](img/10.png)
 
+<br>
 
 Seleccionar el sistema operativo que usarán (Windows, MAC, Linux).
 
@@ -97,6 +105,7 @@ Guardar y luego ejecutar para instalar.
 
 ![](img/11.png)
 
+<br>
 
 # Paso 3: Instalación de Paquetes
 
