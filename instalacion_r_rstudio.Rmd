@@ -126,6 +126,6 @@ Para instalar los paquetes a través de la interfaz de RStudio: Elegir la pesta�
 Para este curso será necesario instalar los siquientes paquetes, a través de la siguiente sentencia en la consola:
 
 ```{r eval=FALSE}
-install.packages(c("tidyverse", "sf", "devtools", "ggmap", "lubridate", 
-                   "leaflet", "osmdata", "osrm"))
+install.packages(c("tidyverse", "haven", "eph", "sf", "devtools", "ggmap", "lubridate", 
+                   "leaflet", "osmdata", "osrm", "ggmap", "rtweet"))
 ```
