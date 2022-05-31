@@ -67,7 +67,7 @@ output:
 <br><br> 
 
 
-#### **f.** Dado el siguiente código, agregar a la base una columna que contenga el peso relativo de la población de cada provincia respecto al total:
+#### **f.** Dado el siguiente código, agregar a la base una columna que contenga el peso relativo (%) de la población de cada provincia respecto al total:
 
 ```r
 library(tidyverse)
