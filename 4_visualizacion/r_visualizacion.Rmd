@@ -15,51 +15,6 @@ output:
 ---
 
 
-```{r include=FALSE}
-options(tibble.width = NULL)
-```
-
-```{r include=FALSE}
-hook_source <- knitr::knit_hooks$get('source')
-knitr::knit_hooks$set(source = function(x, options) {
-  x <- stringr::str_replace(x, "^[[:blank:]]?([^*].+?)[[:blank:]]*#<<[[:blank:]]*$", "*\\1")
-  hook_source(x, options)
-})
-```
-
-
-```{r xaringanExtra-clipboard, eval=FALSE, include=FALSE}
-htmltools::tagList(
- xaringanExtra::use_clipboard(
-   button_text = "<i class=\"fa fa-clipboard\"></i>",
-   success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
- ),
- rmarkdown::html_dependency_font_awesome()
-)
-```
-
-```{r xaringan-extra-styles, echo=FALSE}
-# These are the defaults
-xaringanExtra::use_extra_styles(
-  hover_code_line = TRUE,         #<<
-  mute_unhighlighted_code = TRUE  
-)
-```
-
-```{r xaringanExtra-scribble, echo=FALSE}
-xaringanExtra::use_scribble()
-```
-
-```{r xaringan-panelset, echo=FALSE}
-xaringanExtra::use_panelset()
-
-xaringanExtra::style_panelset_tabs(
-  active_foreground = "#0051BA",
-  hover_foreground = "#d22",
-  font_family = "Roboto"
-)
-```
-
 <style type="text/css">
 
 .remark-slide-content {
@@ -78,12 +33,49 @@ xaringanExtra::style_panelset_tabs(
     display: block;
   }
 }
-
 ```
 
-</style>
+
+```{r xaringan-scribble, echo=FALSE}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  PIZARRA                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+xaringanExtra::use_scribble()
+```
 
 
+```{r xaringanExtra-clipboard, echo=FALSE}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  cLIPBOARD                               ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-Copiar código\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+```{r xaringan-fit-screen, echo=FALSE}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                          PRESENTACION VS RSTUDIO                         ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+xaringanExtra::use_fit_screen()
+```
+
+
+```{r xaringan-extra-styles, echo = FALSE}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                          ESTILOS EXTRA -RESALTADO-                       ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+```
 
 ```{r, include = F}
 #devtools::install_github("EvaMaeRey/flipbookr", force = T)
@@ -95,7 +87,7 @@ library(gt)
 library(icons)
 library(here)
 
-base_covid <- readRDS(here("entradas", "base_covid_sample.RDS"))
+b_inmuebles <- read_csv(here("datos", "inmuebles-estado-nacional.csv"))
 ```
 
 ```{r setup, include=FALSE}
@@ -106,6 +98,45 @@ knitr::opts_chunk$set(message = FALSE,
 
 options(scipen = 9999)
 ```
+
+
+# Hoja de ruta
+
+
+<br><br>
+
+
+## ✔️ ¿Por qué visualizar?
+
+## ✔️ Estructura del código para visualizar
+
+## ✔️ ggplot
+
+☑️️ `operador + (nos va a permitir incorporar capas -como lo hacía el pipe %>%-) `
+
+☑️️ `geom_histogram()` / ☑️️ `geom_boxplol() `  /  ☑️️ `geom_col()` / ☑️️ `chapa y pintura (Atributos)`
+
+
+
+---
+# Referencia bibliográfica
+
+<br><br>
+
+
+- [ggplot2: Elegant Graphics for Data Analysis (_ggplot2: Gráficos elegantes para el análisis de datos_)](https://ggplot2-book.org/)
+
+- [The Grammar of Graphics - Leland Wilkinson ](https://books.google.com.mx/books?id=_kRX4LoFfGQC&hl=es&source=gbs_similarbooks)
+
+
+
+---
+# Hasta ahora
+
+```{r echo=FALSE, out.width = '80%', fig.align = 'center'}
+knitr::include_graphics(here("4_visualizacion", "img", "flujo_de_trabajo_viz.png"))
+```
+
 
 ---
 class: inverse, middle, center
@@ -134,6 +165,55 @@ class: inverse, middle, center
 
 
 [^1]: https://bitsandbricks.github.io/ciencia_de_datos_gente_sociable/visualizacion.html
+
+---
+# ¿Por qué visualizar?
+
+.pull-left[
+```{r echo = FALSE}
+b_inmuebles %>% 
+  count(pais) %>% 
+  top_n(n, n = 10) %>% 
+  arrange(desc(n)) %>% 
+  gt::gt()
+```
+]
+--
+
+.pull-right[
+```{r echo = FALSE}
+b_inmuebles %>% 
+  count(pais) %>% 
+  top_n(n, 10) %>% 
+  ggplot(aes(x = fct_reorder(pais, n), y = n)) +
+  geom_col() +
+  coord_flip()
+```
+]
+
+---
+# Pensar el grafico
+
+.pull-left[
+
+<blockquote>
+
+"... hay algo en que el peor maestro de obras aventaja, desde luego, a la mejor abeja, y es el hecho de que, antes de ejecutar la construcción, **la proyecta en su cerebro**.
+.right[-- <cite>Carlitos Marx</cite>]
+
+</blockquote>
+
+]
+
+--
+
+.pull-right[
+
+```{r echo=FALSE, out.width = '100%', fig.align = 'center'}
+knitr::include_graphics(here("4_visualizacion", "img", "hombre_arania.png"))
+```
+
+]
 
 
 ---
@@ -165,7 +245,7 @@ class: inverse, middle, center
 
 <br>
 
-- ### Una implementación del sistema **Grammar of graphics**
+- ### Una implementación del sistema **Grammar of graphics** (_Gramática de los gráficos_)
 
 <br>
 --
@@ -181,32 +261,23 @@ class: inverse, middle, center
 
 
 ---
-# Hoja de ruta
+# Gramática de los gráficos
 
 
-
-## ✔️ ggplot
-
-☑️️ `operador + (nos va a permitir incorporar capas -como lo hacía el pipe %>%-) `
-
-☑️️ `geom_histogram()`
-
-☑️️ `geom_boxplol()`
-
-☑️️ `geom_col()`
-
-☑️️ `chapa y pintura (Atributos)`
-
-
-
-***
-
-```r
-base_covid <- read.table("entradas/base_covid_muestra.txt", 
-                         sep = ",", 
-                         header = T, 
-                         fileEncoding = "UTF-8")
+```{r echo=FALSE, out.width = '60%', fig.align = 'center'}
+knitr::include_graphics(here("4_visualizacion", "img", "ggplot_capas.jpg"))
 ```
+
+
+---
+# Gráficos en clave de capas
+
+
+```{r echo=FALSE, out.width = '70%', fig.align = 'center'}
+knitr::include_graphics(here("4_visualizacion", "img", "gramatica_de_los_graficos.png"))
+```
+
+
 
 ---
 # ggplot()
@@ -233,7 +304,7 @@ class: inverse, middle, center
 # geom_histogram()
 
 
-- **Caso:** Quiero conocer la distribución de la población según su edad:
+- **Caso:** Quiero conocer la distribución de los inmuebles del estado en función de su superficie (mts^2):
 
 
 ---
@@ -242,7 +313,7 @@ class: inverse, middle, center
 .pull-left[
 
 ```r
-ggplot(`data = base_covid`)
+ggplot(`data = b_inmuebles`)
 ```
 
 
@@ -254,7 +325,7 @@ ggplot(`data = base_covid`)
 .pull-right[
 
 ```{r echo=FALSE}
-ggplot(data = base_covid)
+ggplot(data = b_inmuebles)
 ```
 
 ]
@@ -269,8 +340,8 @@ ggplot(data = base_covid)
 .pull-left[
 
 ```r
-ggplot(data = base_covid,
-       `mapping = aes(x = edad))`
+ggplot(data = b_inmuebles,
+       mapping = `aes(x = superficie_aproximada_m2))`
 ```
 
 <br>
@@ -282,8 +353,8 @@ ggplot(data = base_covid,
 .pull-right[
 
 ```{r echo=FALSE}
-ggplot(data = base_covid, 
-       mapping = aes(x = edad))
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2))
 ```
 
 ]
@@ -296,8 +367,8 @@ ggplot(data = base_covid,
 .pull-left[
 
 ```r
-ggplot(data = base_covid,
-       mapping = aes(x = edad)) +
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) +
   `geom_histogram() `
 ```
 
@@ -310,8 +381,8 @@ ggplot(data = base_covid,
 .pull-right[
 
 ```{r echo=FALSE}
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) +  # EL MÁS
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) +  # EL MÁS
   geom_histogram()
 ```
 
@@ -337,8 +408,8 @@ ggplot(data = base_covid,
 .pull-left[
 
 ```r
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) + 
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) + 
   geom_histogram(`fill = "salmon"`) 
 ```
 
@@ -351,9 +422,9 @@ ggplot(data = base_covid,
 .pull-right[
 
 ```{r echo=FALSE}
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) + 
-  geom_histogram(fill = "salmon") 
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) +
+  geom_histogram(fill = "salmon")
 ```
 
 ]
@@ -365,8 +436,8 @@ ggplot(data = base_covid,
 .pull-left[
 
 ```r
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) + 
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) + 
   geom_histogram(fill = "salmon",
                  `colour = "black"`) 
 ```
@@ -380,10 +451,10 @@ ggplot(data = base_covid,
 .pull-right[
 
 ```{r echo=FALSE}
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) + 
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) +
   geom_histogram(fill = "salmon",
-                 colour = "black") 
+                 colour = "black")
 ```
 
 ]
@@ -395,8 +466,8 @@ ggplot(data = base_covid,
 .pull-left[
 
 ```r
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) + 
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) + 
   geom_histogram(fill = "salmon",
                  colour = "black",
                  `alpha = 0.5`) 
@@ -411,11 +482,11 @@ ggplot(data = base_covid,
 .pull-right[
 
 ```{r echo=FALSE}
-ggplot(data = base_covid, 
-       mapping = aes(x = edad)) + 
+ggplot(data = b_inmuebles,
+       mapping = aes(x = superficie_aproximada_m2)) +
   geom_histogram(fill = "salmon",
                  colour = "black",
-                 alpha = 0.5) 
+                 alpha = 0.5)
 ```
 
 ]
@@ -436,13 +507,13 @@ class: inverse, middle
 
 # Práctica
 
-1) Importar la base covid_muestra.
+1) Importar la base de inmuebles del Estado Nacional.
 
 2) El siguiente código debería realizar un histograma. Para ello hace falta completar aquellos espacios con ______ y ejecutarlo:
 
 ```r
 ggplot(data = ______, 
-       mapping = aes(x = edad)) ______ 
+       mapping = aes(x = superficie_aproximada_m2)) ______ 
   geom______ (fill = ______,
                  colour = "black",
                  alpha = 0.5) 
@@ -465,90 +536,99 @@ class: inverse, middle, center
 ---
 # geom_col()
 
-**Caso:** Quiero visualizar la diferencia entre la edad media de aquellas personas que recibieron asistencia respiratoria y aquellas que no:
+**Caso:** Quiero visualizar la cantidad de inmuebles del Estado Nacional en el mundo y diferenciar cuántos hay en cada país:
 
 --
 
-
 ```{r}
-summary(base_covid$edad)
-```
---
-
-```{r}
-base_covid %>% 
-  filter(edad == 0) %>% 
-  count()
+unique(b_inmuebles$pais)
 ```
 
 ---
 # geom_col()
 
--   **Paso 2.** *Limpiar* la variable:
-```{r eval = FALSE}
-tabla_edad <- base_covid %>% 
-  rename(asistencia_mec = asistencia_respiratoria_mecanica) %>% 
-  filter(!is.na(asistencia_mec) & edad >= 0) %>% 
-  group_by(asistencia_mec) %>% 
-  summarise(edad_media = mean(edad, na.rm = TRUE)) %>% 
-  mutate(edaD_media = round(edad_media, digits = 0))
+```{r}
+b_inmuebles %>%
+  count(pais) %>% 
+  arrange(-n)
 ```
 
---
-
-```{r echo = FALSE}
-(tabla_edad <- base_covid %>% 
-   rename(asistencia_mec = asistencia_respiratoria_mecanica) %>% 
-   filter(!is.na(edad) & edad >= 0) %>% 
-  group_by(asistencia_mec) %>% 
-  summarise(edad_media = mean(edad))) %>% 
-  mutate(edaD_media = round(edad_media, digits = 0))
+```{r include=FALSE}
+tabla_pais <- b_inmuebles %>%
+  count(pais)
 ```
-
-
-
 
 ---
 
-`r chunk_reveal("geom_col", break_type = "auto", widths = c(1.7, 1.3), title = "# geom_col")`
-
+`r chunk_reveal("geom_col", break_type = "auto", widths = c(1.3, 1.7), title = "# geom_col")`
 
 
 ```{r geom_col, include=FALSE}
-ggplot(data = tabla_edad,
-       mapping = aes(x = asistencia_mec,
-                     y = edad_media)) +
+ggplot(data = tabla_pais,
+       mapping = aes(x = pais,
+                     y = n)) +
   geom_col()
 ```
 
 
 ---
+# geom_col()
 
-`r chunk_reveal("geom_col_1", break_type = "auto", widths = c(1.7, 1.3), title = "# geom_col - relleno")`
+### Probemos focalizar el análisis en aquellos inmuebles fuera del país
+
+```r
+tabla_foraneos <- b_inmuebles %>% 
+  filter(pais != "Argentina") %>% 
+  count(pais)
+```
+
+```{r include=FALSE}
+tabla_foraneos <- b_inmuebles %>% 
+  filter(pais != "Argentina") %>% 
+  count(pais)
+```
+---
+
+`r chunk_reveal("geom_col_foco", break_type = "auto", widths = c(1.3, 1.7), title = "# geom_col")`
+
+
+```{r geom_col_foco, include=FALSE}
+ggplot(data = tabla_foraneos,
+       aes(x = pais,
+           y = n)) +
+  geom_col() +
+  coord_flip()
+```
+
+---
+
+`r chunk_reveal("geom_col_1", break_type = "auto", widths = c(1.3, 1.7), title = "# geom_col - relleno")`
 
 
 
 ```{r geom_col_1, include=FALSE}
-ggplot(data = tabla_edad,
-       mapping = aes(x = asistencia_mec,
-                     y = edad_media)) +
-  geom_col(fill = c("green", "red"))
+ggplot(data = tabla_foraneos,
+       mapping = aes(x = pais,
+                     y = n)) +
+  geom_col(fill = "green") +
+  coord_flip()
 ```
 
 ---
 
 
-`r chunk_reveal("geom_col_2", break_type = "auto", widths = c(1.7, 1.3), title = "# geom_col - Contorno + Transparencia")`
+`r chunk_reveal("geom_col_2", break_type = "auto", widths = c(1.3, 1.7), title = "# geom_col - Contorno + Transparencia")`
 
 
 
 ```{r geom_col_2, include=FALSE}
-ggplot(data = tabla_edad,
-       mapping = aes(x = asistencia_mec,
-                     y = edad_media)) +
-  geom_col(aes(fill = asistencia_mec),
+ggplot(data = tabla_foraneos,
+       mapping = aes(x = pais,
+                     y = n)) +
+  geom_col(aes(fill = pais),
            colour = "black",
-           alpha = 0.7)
+           alpha = 0.7) +
+  coord_flip()
 ```
 
 ---
@@ -568,20 +648,61 @@ class: inverse, middle, center
 
 
 ```{r geom_col_3, include=FALSE}
-ggplot(data = tabla_edad,
-       mapping = aes(x = asistencia_mec,
-                     y = edad_media)) +
-  geom_col(aes(fill = asistencia_mec),
+ggplot(data = tabla_foraneos,
+       mapping = aes(x = pais,
+                     y = n)) +
+  geom_col(aes(fill = pais),
            colour = "black",
            alpha = 0.7) +
+  coord_flip() +
   labs(title = "Este es el título del gráfico",
        subtitle = "Y este, el subtítulo",
        x = "Acá puedo editar texto de eje x",
        y = "y acá texto de eje y",
        fill = "leyenda? Por supuesto, acá") +
-  geom_text(aes(label = round(edad_media))) +
+  geom_text(aes(label = n)) +
   theme_minimal()
 ```
+
+---
+class: inverse, middle, center
+
+# _PRÁCTICA_
+
+<html>
+  <div style='float:left'></div>
+  <hr color='#EB811B' size=1px width=1125px>
+</html>
+
+---
+class: inverse, middle
+
+# Práctica
+
+- Dado el siguiente código que devuelve la cantidad de casos para las provincias seleccionadas, responder **visualmente** a la pregunta: ¿Cuál es la provincia que registra más casos?:
+```{r eval = FALSE}
+# tabla_provincia <- base_covid %>% 
+#   rename(provincia = residencia_provincia_nombre) %>% 
+#   filter(provincia %in% c("San Luis", "San Juan", "Santiago del Estero")) %>% 
+#   count(provincia)
+```
+
+1. Hacer un gráfico de barras que muestre la cantidad de casos por provincia
+
+1. Agregarle **color** a las barras en base a la variable **provincia**
+
+1. Agregarle los textos de: **Titulo**, **Ejes x e y**, **Leyenda**.
+
+
+---
+class: inverse, middle, center
+
+# Variables de tipo factor
+
+<html>
+  <div style='float:left'></div>
+  <hr color='#EB811B' size=1px width=1125px>
+</html>
 
 
 ---
@@ -625,93 +746,111 @@ class(base$sexo_text)
 -   Convertimos en factor a la variable _sexo_num_
 
 ```{r}
-base <- base %>% 
+base <- base %>%
   mutate(sexo_factor = factor(sexo_num,
-                              levels = c(1, 2)))
+                              levels = c(1, 2),
+                              labels = c("Varón", "Mujer")))
 
-base %>% 
-  count(sexo_factor)
 ```
 
 --
 
--   **¿Qué pasa si invierto el orden de los niveles (categorías) en el parámetro `level = `?**
+```{r}
+base %>%
+  count(sexo_factor)
+```
+  
+
+
+--
+
+### ¿Qué pasa si invierto el orden de los niveles (categorías) en el parámetro `level = `?
+
+---
+# geom_col - factor
+
+### Caso: Quiero saber la superficie media de los inmuebles según si son propiedad del Estado Nacional o si son alquilados
+
 ---
 
-`r chunk_reveal("geom_col_4", break_type = "auto", widths = c(1.3, 1.7), title = "# geom_col + factor")`
+`r chunk_reveal("geom_col_4", break_type = "auto", widths = c(1.7, 1.3), title = "# geom_col + factor")`
 
 
 
 ```{r geom_col_4, include=FALSE}
-tabla_edad %>% 
-  mutate(asistencia_mec = factor(asistencia_mec, 
-                                 levels = c("SI", "NO"))) %>% 
-  ggplot(mapping = aes(x = asistencia_mec,
-                     y = edad_media)) +
-  geom_col(aes(fill = asistencia_mec),
+b_inmuebles %>%
+  select(situacion_inmueble, superficie_aproximada_m2) %>% 
+  mutate(situacion_inmueble_recod = factor(situacion_inmueble,
+                                           levels = c("Propiedad del ENA", 
+                                                      "Alquilado"),
+                                           labels = c("Propio",
+                                                      "Alquilado"))) %>%
+  group_by(situacion_inmueble_recod) %>% 
+  summarise(
+    sup_media = round(mean(superficie_aproximada_m2),
+                      digits = 0)) %>% 
+  ggplot(aes(x = situacion_inmueble_recod,
+             y = sup_media)) +
+  geom_col(aes(fill = situacion_inmueble_recod),
            colour = "black",
            alpha = 0.7) +
-  labs(title = "Edad media de la población según perceptción de asistencia respiratoria mecánica",
-       subtitle = "Año 2020-2021.",
-       x = "Asistencia respiratoria mecánica",
-       y = "Edad media",
-       fill = "Asistencia médica") +
-  geom_text(aes(label = round(edad_media)),
+  labs(title = "Superficie media de los inmuebles según condición de propiedad",
+       subtitle = "Año 2019.",
+       x = "Condición de propiedad",
+       y = "Superficie media (en mts2)",
+       fill = "Condición de propiedad") +
+  geom_text(aes(label = round(sup_media)),
             vjust = -0.5) +
   theme_minimal()
 ```
 
 ---
-class: inverse, middle, center
+# geom_col + Variable con faceteado
 
-# _PRÁCTICA_
-
-<html>
-  <div style='float:left'></div>
-  <hr color='#EB811B' size=1px width=1125px>
-</html>
-
----
-class: inverse, middle
-
-# Práctica
-
-- Dado el siguiente código que devuelve la cantidad de casos para las provincias seleccionadas, responder **visualmente** a la pregunta: ¿Cuál es la provincia que registra más casos?:
-```{r eval = FALSE}
-tabla_provincia <- base_covid %>% 
-  rename(provincia = residencia_provincia_nombre) %>% 
-  filter(provincia %in% c("San Luis", "San Juan", "Santiago del Estero")) %>% 
-  count(provincia)
+```{r}
+tabla_facet <- b_inmuebles %>%
+  filter(pais == "Argentina" & provincia == "Ciudad Autonoma de Buenos Aires") %>% 
+  select(departamento,situacion_inmueble, 
+         superficie_aproximada_m2) %>% 
+  mutate(situacion_inmueble_recod = factor(situacion_inmueble,
+                                           levels = c("Propiedad del ENA", 
+                                                      "Alquilado"),
+                                           labels = c("Propio",
+                                                      "Alquilado"))) %>%
+  group_by(departamento, situacion_inmueble_recod) %>% 
+  summarise(
+    sup_media = round(mean(superficie_aproximada_m2),
+                      digits = 0))
 ```
 
-1. Hacer un gráfico de barras que muestre la cantidad de casos por provincia
-
-1. Agregarle **color** a las barras en base a la variable **provincia**
-
-1. Agregarle los textos de: **Titulo**, **Ejes x e y**, **Leyenda**.
 
 
 ---
 
 
-`r chunk_reveal("geom_col_5", break_type = "auto", widths = c(1.3, 1.7), title = "# geom_col + faceteado + flipeo")`
+`r chunk_reveal("geom_col_5", break_type = "auto", widths = c(1.7, 1.3), title = "# geom_col + variable de control con faceteado")`
 
 
 
 ```{r geom_col_5, include=FALSE}
-base_covid %>% 
-  rename(provincia = residencia_provincia_nombre) %>% 
-  filter(provincia %in% c("San Luis", "San Juan", "Santiago del Estero")) %>% 
-  count(provincia, sexo) %>% 
-  ggplot(mapping = aes(x = provincia, 
-                       y = n)) +
-  geom_col(aes(fill = provincia)) +
+tabla_facet %>% 
+  ggplot(aes(x = departamento,
+             y = sup_media)) +
+  geom_col(aes(fill = departamento),
+           colour = "black",
+           alpha = 0.7) +
+  labs(title = "Superficie media de los inmuebles según condición de propiedad",
+       subtitle = "Año 2019.",
+       x = "Condición de propiedad",
+       y = "Superficie media (en mts2)",
+       fill = "Condición de propiedad") +
   theme_minimal() +
-  facet_wrap(facets = "sexo") +
-  geom_text(aes(label = n),
-            vjust = -0.25) +
-  coord_flip()
-  
+  theme(
+    legend.position = "none"
+  ) +
+  coord_flip() +
+  facet_wrap(facets = "situacion_inmueble_recod", 
+             nrow = 2)
 ```
 
 ---
@@ -729,23 +868,20 @@ class: inverse, middle
 
 # Práctica
 
-2). Identificar el error en la siguiente sentencia, corregirlo y correr el gráfico:
+1. Correr el siguiente código para armar la tabla con los datos a graficar:
 
 ```{r eval=FALSE}
-tabla_ejercicio <- base_covid %>% 
-  rename(provincia = residencia_provincia_nombre) %>% 
-  filter(provincia %in% c("Córdoba", "Salta", "La Pampa")) %>% 
-  count(provincia, sexo)
-
-
-ggplot(data = provincia,
-       mapping = aes(x = tabla_ejercicio,
-                     y = n)) +
-  geom_col(aes(fill = provincia)) +
-  theme_minimal() +
-  facet_wrap(facets = "sexo") +
-  geom_text(aes(label = n),
-            vjust = -0.25)
+tabla_ejercicio <- b_inmuebles %>%
+  select(situacion_inmueble, superficie_aproximada_m2) %>% 
+  mutate(situacion_inmueble_recod = factor(situacion_inmueble,
+                                           levels = c("Propiedad del ENA", 
+                                                      "Alquilado"),
+                                           labels = c("Propio",
+                                                      "Alquilado"))) %>%
+  group_by(situacion_inmueble_recod) %>% 
+  summarise(
+    sup_media = round(mean(superficie_aproximada_m2),
+                      digits = 0))
 ```
 
 ---
@@ -753,27 +889,27 @@ class: inverse, middle
 
 # Práctica
 
-2). Identificar el error en la siguiente sentencia, corregirlo y correr el gráfico:
+2. Identificar el error en la siguiente sentencia, corregirlo y correr el gráfico.
+3. Una vez corregido, modificar parámetros a gusto y corroborar los cambios en el gráfico.
 
 ```{r eval=FALSE}
-tabla_ejercicio_2 <- base_covid %>% 
-  rename(provincia = residencia_provincia_nombre) %>% 
-  filter(provincia %in% c("Córdoba", "Salta", "La Pampa")) %>% 
-  count(provincia, origen_financiamiento) %>% 
-  group_by(provincia) %>% 
-  mutate(peso = round(n / sum(n) * 100, digits = 2))
-
-
-ggplot(data = tabla_ejercicio_2,
-       mapping = aes(h = origen_financiamiento,
-                     y = peso)) +
-  geom_col(aes(relleno = origen_financiamiento)) +
-  facet_wrap(facets = "provincia") +
-  geom_text(aes(label = peso),
-            vjust = -0.25) +
-  theme_minimal() 
+ggplot(data = situacion_inmueble_recod,
+       aes(x = tabla_ejercicio,
+             y = sup_media)) +
+  geom_col(aes(fill = situacion_inmueble_recod),
+           colour = "black",
+           alpha = 0.7) +
+  labs(title = "Superficie media de los inmuebles según condición de propiedad",
+       subtitle = "Año 2019.",
+       x = "Condición de propiedad",
+       y = "Superficie media (en mts2)",
+       fill = "Condición de propiedad") +
+  geom_text(aes(label = round(sup_media)),
+            vjust = -0.5) +
+  theme_minimal()
 ```
 
+---
 class: inverse, middle, center
 
 # _RECURSOS_

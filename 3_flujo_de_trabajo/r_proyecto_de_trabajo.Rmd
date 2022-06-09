@@ -123,7 +123,7 @@ Intentar correr el siguiente script:
 ```{r eval = FALSE}
 library(tidyverse)
 
-b_inmuebles <- read_csv("C:\Users\pablo\Documents\Pablo\Cursos R\R+FLACSO\R+BigData\r_bigdataEit_flacso\datos")
+b_inmuebles <- read_csv("C:/Users/pablo/Documents/Pablo/Cursos R/R+FLACSO/R+BigData/r_bigdataEit_flacso/datos/inmuebles-estado-nacional.csv")
 ```
 
 
